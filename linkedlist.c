@@ -23,9 +23,12 @@ void insert(linkedlist **l, int val) {
 }
 
 void destroy(linkedlist *l) {
+  linkedlist *temp;
+
   while (l != 0) {
+    temp = l->next;
     free(l);
-    l = l->next;
+    l = temp;
   }
 }
 
