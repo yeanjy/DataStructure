@@ -22,13 +22,13 @@ void insert(linkedlist **l, int val) {
   }
 }
 
-void destroy(linkedlist *l) {
+void destroy(linkedlist **l) {
   linkedlist *temp;
 
-  while (l != 0) {
-    temp = l->next;
-    free(l);
-    l = temp;
+  while (*l != 0) {
+    temp = (*l)->next;
+    free(*l);
+    *l = temp;
   }
 }
 
@@ -59,6 +59,7 @@ int main() {
   init(&a);
   insert(&a, 4);
   insert(&a, 5);
-  destroy(a);
+  destroy(&a);
+  printList(a);
   return 0;
 }
