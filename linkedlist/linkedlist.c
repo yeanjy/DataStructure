@@ -24,9 +24,10 @@ void insert(linkedlist **l, int val) {
   temp->val = val;
   temp->next = NULL;
 
-  if ((*l)->head == NULL)
+  if ((*l)->head == NULL) {
     (*l)->head = temp;
-  else {
+    (*l)->size = 1;
+  } else {
     while ((*l)->head->next != NULL)
       (*l)->head = (*l)->head->next;
 
@@ -69,11 +70,53 @@ bool IsOnTheList(linkedlist *l, int val) {
   return false;
 }
 
+int SearchByIndex(linkedlist *l, int index) {
+  assert(l->size > index);
+
+  node *current = l->head;
+
+  while (index > 0) {
+    current = current->next;
+    index--;
+  }
+
+  return current->val;
+}
+
+void extend(linkedlist **l, int index, int val) {
+  assert((*l)->size >= index && index >= 0);
+
+  node *first = (*l)->head;
+
+  if (index == 0) {
+    node *extend = malloc(sizeof(node));
+    extend->val = val;
+    extend->next = first;
+    (*l)->head = extend;
+    (*l)->size++;
+  } else {
+    while (index > 1) {
+      (*l)->head = (*l)->head->next;
+      index--;
+    }
+
+    node *extend = malloc(sizeof(node));
+    extend->val = val;
+    extend->next = (*l)->head->next;
+    (*l)->head->next = extend;
+    (*l)->size++;
+  }
+
+  (*l)->head = first;
+}
+
 int main() {
   linkedlist *l;
   init(&l);
+  insert(&l, 1);
   insert(&l, 3);
-  insert(&l, 5);
+  extend(&l, 1, 2);
+  extend(&l, 3, 4);
   printList(l);
   deleteList(&l);
   return 0;
