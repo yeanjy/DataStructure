@@ -28,10 +28,11 @@ void insert(linkedlist **l, int val) {
     (*l)->head = temp;
     (*l)->size = 1;
   } else {
-    while ((*l)->head->next != NULL)
-      (*l)->head = (*l)->head->next;
+    node *current = (*l)->head;
+    while (current->next != NULL)
+      current = current->next;
 
-    (*l)->head->next = temp;
+    current->next = temp;
     (*l)->size++;
   }
 }
@@ -42,13 +43,19 @@ void printList(linkedlist *l) {
   node *current = l->head;
 
   while (current != NULL) {
-    printf("%d\n", current->val);
+    printf("Current val number: %d\n", current->val);
     current = current->next;
   }
 }
 
 void deleteList(linkedlist **l) {
   assert(l != NULL);
+
+  if ((*l)->head == NULL) {
+    free(*l);
+    *l = NULL;
+    return;
+  }
 
   node *temp;
   while ((*l)->head != NULL) {
@@ -74,7 +81,7 @@ bool IsOnTheList(linkedlist *l, int val) {
 }
 
 int SearchByIndex(linkedlist *l, int index) {
-  assert(l->size > index);
+  assert(l->size > index || index >= 0 || l != NULL);
 
   node *current = l->head;
 
@@ -120,6 +127,11 @@ int main() {
   insert(&l, 3);
   extend(&l, 1, 2);
   extend(&l, 3, 4);
+  extend(&l, 4, 5);
+  insert(&l, 6);
+  extend(&l, 6, 7);
+  insert(&l, 8);
+  extend(&l, 8, 9);
   printList(l);
   deleteList(&l);
   return 0;
