@@ -48,13 +48,16 @@ void printList(linkedlist *l) {
 }
 
 void deleteList(linkedlist **l) {
+  assert(l != NULL);
+
+  node *temp;
   while ((*l)->head != NULL) {
-    node *temp = (*l)->head->next;
+    temp = (*l)->head->next;
     free((*l)->head);
     (*l)->head = temp;
   }
-  (*l)->size = 0;
   free(*l);
+  *l = NULL;
 }
 
 bool IsOnTheList(linkedlist *l, int val) {
