@@ -38,7 +38,7 @@ void insert(linkedlist **l, int val) {
 }
 
 void printList(linkedlist *l) {
-  assert(l != NULL);
+  assert(l->head != NULL && l != NULL);
 
   node *current = l->head;
 
@@ -49,7 +49,7 @@ void printList(linkedlist *l) {
 }
 
 void deleteList(linkedlist **l) {
-  assert(l != NULL);
+  assert(l != NULL && *l != NULL && (*l)->head != NULL);
 
   if ((*l)->head == NULL) {
     free(*l);
@@ -94,7 +94,7 @@ int SearchByIndex(linkedlist *l, int index) {
 }
 
 void extend(linkedlist **l, int index, int val) {
-  assert((*l)->size >= index && index >= 0);
+  assert(l != NULL && (*l)->size >= index && index >= 0);
 
   node *first = (*l)->head;
 
@@ -143,6 +143,28 @@ void delet_at(linkedlist **l, int index) {
   }
 
   (*l)->size--;
+}
+
+void delet_last(linkedlist **l) {
+  assert(l != NULL && *l != NULL && (*l)->head != NULL);
+
+  if ((*l)->head->next == NULL) {
+    free((*l)->head);
+    (*l)->head = NULL;
+    (*l)->size = 0;
+  } else {
+    node *current = (*l)->head;
+    node *previus;
+    while (current->next != NULL) {
+      previus = current;
+      current = current->next;
+    }
+
+    free(current);
+    current = NULL;
+    previus->next = NULL;
+    (*l)->size--;
+  }
 }
 
 int main() {
