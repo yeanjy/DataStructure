@@ -81,7 +81,7 @@ bool IsOnTheList(linkedlist *l, int val) {
 }
 
 int SearchByIndex(linkedlist *l, int index) {
-  assert(l->size > index || index >= 0 || l != NULL);
+  assert(l->size > index && index > 0 && l != NULL);
 
   node *current = l->head;
 
@@ -118,6 +118,31 @@ void extend(linkedlist **l, int index, int val) {
   }
 
   (*l)->head = first;
+}
+
+void delet_at(linkedlist **l, int index) {
+  assert(index >= 0 && index < (*l)->size);
+
+  if (index == 0) {
+    node *next = (*l)->head->next;
+    free((*l)->head);
+    (*l)->head = next;
+
+  } else {
+    node *current = (*l)->head;
+
+    while (index > 1) {
+      current = current->next;
+      index--;
+    }
+
+    node *del = current->next;
+    node *next = del->next;
+    free(del);
+    current->next = next;
+  }
+
+  (*l)->size--;
 }
 
 int main() {
