@@ -108,18 +108,16 @@ void extend(linkedlist **l, int index, int val) {
     (*l)->size++;
   } else {
     while (index > 1) {
-      (*l)->head = (*l)->head->next;
+      first = first->next;
       index--;
     }
 
     node *extend = malloc(sizeof(node));
     extend->val = val;
-    extend->next = (*l)->head->next;
-    (*l)->head->next = extend;
+    extend->next = first->next;
+    first->next = extend;
     (*l)->size++;
   }
-
-  (*l)->head = first;
 }
 
 void delet_at(linkedlist **l, int index) {
