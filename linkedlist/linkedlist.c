@@ -14,6 +14,8 @@ typedef struct linkedlist {
 } linkedlist;
 
 void init(linkedlist **l) {
+  assert(l != NULL && *l != NULL);
+
   *l = malloc(sizeof(linkedlist));
   (*l)->head = NULL;
   (*l)->size = 0;
