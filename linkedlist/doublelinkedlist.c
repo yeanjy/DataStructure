@@ -97,14 +97,23 @@ void deletList(linkedlist **l) {
 //     (*l)->head = temp;
 //     (*l)->size++;
 //   } else {
-//     node *first = (*l)->head;
+//     node *current = (*l)->head;
+//     node *previuss;
 //
 //     while (index > 1) {
-//       first = first->next;
+//       previuss = current;
+//       current = current->next;
+//       index--;
 //     }
 //
-//     node *temp = malloc(sizeof(node));
-//     temp->val = val;
+//     node *extend = malloc(sizeof(node));
+//     extend->val = val;
+//     extend->next = current->previus;
+//     extend->previus = previuss->next;
+//     previuss->next = extend->previus;
+//     current->previus = extend->next;
+//
+//     (*l)->size++;
 //   }
 // }
 
@@ -114,7 +123,7 @@ int main() {
   insert(&l, 1);
   insert(&l, 2);
   insert(&l, 3);
-  // extend_at(&l, 0, 100);
+  // extend_at(&l, 1, 2);
   printList(l);
   deletList(&l);
 
