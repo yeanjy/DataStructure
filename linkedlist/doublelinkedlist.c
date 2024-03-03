@@ -6,7 +6,7 @@
 typedef struct node {
   int val;
   struct node *next;
-  struct node *previus;
+  struct node *previous;
 } node;
 
 typedef struct linkedlist {
@@ -28,7 +28,7 @@ void insert(linkedlist **l, int val) {
   node *temp = malloc(sizeof(node));
   temp->val = val;
   temp->next = NULL;
-  temp->previus = NULL;
+  temp->previous = NULL;
 
   if ((*l)->head == NULL) {
     (*l)->head = temp;
@@ -40,7 +40,7 @@ void insert(linkedlist **l, int val) {
     }
 
     current->next = temp;
-    temp->previus = current;
+    temp->previous = current;
     (*l)->size++;
   }
 }
@@ -51,8 +51,8 @@ void printList(linkedlist *l) {
   node *current = l->head;
   while (current != NULL) {
     printf("current val number: %d\n", current->val);
-    if (current->previus != NULL) {
-      printf("Previous val number: %d\n", current->previus->val);
+    if (current->previous != NULL) {
+      printf("Previous val number: %d\n", current->previous->val);
     } else {
       printf("Previous val: NULL\n");
     }
@@ -85,45 +85,55 @@ void deletList(linkedlist **l) {
   *l = NULL;
 }
 
-// void extend_at(linkedlist **l, int index, int val) {
-//   assert(l != NULL && (*l)->size >= index && index >= 0);
-//
-//   if (index == 0) {
-//     node *temp = malloc(sizeof(node));
-//     temp->val = val;
-//     temp->next = (*l)->head;
-//     temp->previus = NULL;
-//     (*l)->head->previus = temp;
-//     (*l)->head = temp;
-//     (*l)->size++;
-//   } else {
-//     node *current = (*l)->head;
-//     node *previuss;
-//
-//     while (index > 1) {
-//       previuss = current;
-//       current = current->next;
-//       index--;
-//     }
-//
-//     node *extend = malloc(sizeof(node));
-//     extend->val = val;
-//     extend->next = current->previus;
-//     extend->previus = previuss->next;
-//     previuss->next = extend->previus;
-//     current->previus = extend->next;
-//
-//     (*l)->size++;
-//   }
-// }
+void extend_at(linkedlist **l, int index, int val) {
+  assert(l != NULL && (*l)->size >= index && index >= 0);
 
+  if (index == 0) {
+    node *temp = malloc(sizeof(node));
+    temp->val = val;
+    temp->next = (*l)->head;
+    temp->previous = NULL;
+
+    if ((*l)->head != NULL) {
+      (*l)->head->previous = temp;
+    }
+
+    (*l)->head = temp;
+    (*l)->size++;
+  } else {
+    node *current = (*l)->head;
+    node *previous = NULL;
+
+    while (index > 0) {
+      previous = current;
+      current = current->next;
+      index--;
+    }
+
+    node *extend = malloc(sizeof(node));
+    extend->val = val;
+    extend->next = current;
+    extend->previous = previous;
+
+    if (previous != NULL) {
+      previous->next = extend;
+    }
+
+    if (current != NULL) {
+      current->previous = extend;
+    }
+
+    (*l)->size++;
+  }
+}
 int main() {
   linkedlist *l;
   init(&l);
   insert(&l, 1);
   insert(&l, 2);
-  insert(&l, 3);
-  // extend_at(&l, 1, 2);
+  extend_at(&l, 2, 3);
+  insert(&l, 4);
+  extend_at(&l, 4, 5);
   printList(l);
   deletList(&l);
 
